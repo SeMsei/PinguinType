@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/images/icons">
+        <file>icons/PinguinIcon.png</file>
+        <file>icons/bell.png</file>
+        <file>icons/crown.png</file>
+        <file>icons/information.png</file>
+        <file>icons/keyboard.png</file>
+        <file>icons/logout.png</file>
+        <file>icons/mail.png</file>
+        <file>icons/settings.png</file>
+        <file>icons/user.png</file>
+        <file>icons/keyboardw.png</file>
+        <file>icons/bellw.png</file>
+        <file>icons/closew.png</file>
+        <file>icons/crownw.png</file>
+        <file>icons/informationw.png</file>
+        <file>icons/logoutw.png</file>
+        <file>icons/mailw.png</file>
+        <file>icons/minimizew.png</file>
+        <file>icons/minusw.png</file>
+        <file>icons/avatarw.png</file>
+        <file>icons/settingsw.png</file>
+        <file>icons/codew.png</file>
+        <file>icons/documentsw.png</file>
+        <file>icons/donatew.png</file>
+        <file>icons/padlockw.png</file>
+        <file>icons/shieldw.png</file>
+        <file>icons/gitw.png</file>
+        <file>icons/watercolorw.png</file>
+    </qresource>
+</RCC>

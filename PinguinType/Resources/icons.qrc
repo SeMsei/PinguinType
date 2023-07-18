@@ -27,5 +27,9 @@
         <file>icons/shieldw.png</file>
         <file>icons/gitw.png</file>
         <file>icons/watercolorw.png</file>
+        <file>icons/example.png</file>
+    </qresource>
+    <qresource prefix="/images/marks">
+        <file>check_marks/default.png</file>
     </qresource>
 </RCC>

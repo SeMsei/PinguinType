@@ -8,8 +8,10 @@
 #include <QDateTime>
 #include <QTime>
 #include <QTimer>
+#include <QCheckBox>
+#include <QPainter>
 
-#include "LoginInterface/logininterface.h"
+#include "CustomWidgets/PaintableCheckBox/paintablecheckbox.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +35,10 @@ private slots:
     void on_hide_window_btn_clicked();
     void on_close_window_btn_clicked();
     void change_time();
+
+    void on_main_login_btn_clicked();
+
+    void on_start_test_btn_clicked();
 
 private:
     Ui::MainWindow *ui;

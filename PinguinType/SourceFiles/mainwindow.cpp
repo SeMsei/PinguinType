@@ -1,7 +1,7 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +18,19 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *main_timer = new QTimer();
     connect(main_timer, SIGNAL(timeout()), this, SLOT(change_time()));
     main_timer->start(1000);
+
+    /*QPixmap source_image(":/images/icons/icons/example.png");
+
+    QRgb base_color = 0x5F4F7F;
+    QPixmap new_image = source_image;
+    QPainter painter(&new_image);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(new_image.rect(), base_color);
+    painter.end();
+    QImage tmp_im;
+    tmp_im = new_image.toImage();
+    tmp_im.save("../Resources/icons/example.png");*/
+
 }
 
 MainWindow::~MainWindow()
@@ -86,5 +99,17 @@ void MainWindow::change_time() {
         h.push_front('0');
 
     this->ui->time_label->setText(h + ":" + m + ":" + s);
+}
+
+
+void MainWindow::on_main_login_btn_clicked()
+{
+    this->ui->stackedWidget->setCurrentIndex(0);
+}
+
+
+void MainWindow::on_start_test_btn_clicked()
+{
+    this->ui->stackedWidget->setCurrentIndex(1);
 }
 

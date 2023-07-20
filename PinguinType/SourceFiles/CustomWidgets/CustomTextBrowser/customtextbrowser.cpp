@@ -15,11 +15,11 @@ void CustomTextBrowser::paint_text(QVector<QPair<QChar, State>> str) {
 
     for (size_t i = left_border_first; i <= right_border_first; i++) {
         if (str[i].second == State::Default) {
-            html += "<span style=\"color:#000000;\">";
+            html += "<span style=\"color:#778190;\">";
         } else if (str[i].second == State::Correct) {
-            html += "<span style=\"color:#00FF00;\">";
+            html += "<span style=\"color:#E9ECF0;\">";
         } else {
-            html += "<span style=\"color:#FF0000;\">";
+            html += "<span style=\"color:#BF3335;\">";
         }
 
         html += str[i].first;
@@ -33,11 +33,11 @@ void CustomTextBrowser::paint_text(QVector<QPair<QChar, State>> str) {
         html.append("<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">");
         for (size_t i = left_border_second; i <= right_border_second; i++) {
             if (str[i].second == State::Default) {
-                html += "<span style=\"color:#000000;\">";
+                html += "<span style=\"color:#778190;\">";
             } else if (str[i].second == State::Correct) {
-                html += "<span style=\"color:#00FF00;\">";
+                html += "<span style=\"color:##E9ECF0;\">";
             } else {
-                html += "<span style=\"color:#FF0000;\">";
+                html += "<span style=\"color:#BF3335;\">";
             }
 
             html += str[i].first;
@@ -76,7 +76,7 @@ void CustomTextBrowser::paint() {
         is_moving = true;
         tmr = new QTimer();
         connect(tmr, SIGNAL(timeout()),this, SLOT(call_event()));
-        tmr->setInterval(5);
+        tmr->setInterval(6);
         tmr->start();
     }
 }
@@ -103,19 +103,18 @@ void CustomTextBrowser::call_event() {
 
 void CustomTextBrowser::paintEvent(QPaintEvent *e) {
     QPainter painter(viewport());
-    painter.setPen(QPen(Qt::blue, 2, Qt::SolidLine, Qt::RoundCap));
+    painter.setPen(QPen(QColor(0xF44C7F), 2, Qt::SolidLine, Qt::RoundCap));
 
     if (cur_pos == str.size()) {
-
         td.drawContents(&painter);
         is_paint_text = false;
     }
 
     if (is_short) {
-        painter.setPen(QPen(Qt::blue, 1, Qt::SolidLine, Qt::RoundCap));
+        painter.setPen(QPen(QColor(0xF44C7F), 1, Qt::SolidLine, Qt::RoundCap));
         painter.drawLine(x-16, y-9, x-16, y+font_size/3*4-10);
     } else {
-        painter.setPen(QPen(Qt::blue, 2, Qt::SolidLine, Qt::RoundCap));
+        painter.setPen(QPen(QColor(0xF44C7F), 2, Qt::SolidLine, Qt::RoundCap));
         painter.drawLine(x-16,y-11,x-16, y+font_size/3*4-8);
     }
 
@@ -123,6 +122,7 @@ void CustomTextBrowser::paintEvent(QPaintEvent *e) {
 }
 
 void CustomTextBrowser::set_pos(int pos) {
+    qDebug() << this->size();
 
     this->cur_pos = pos;
 
@@ -163,11 +163,12 @@ void CustomTextBrowser::set_pos(int pos) {
 
             for (size_t i = left_border_second; i < str.size(); i++) {
                 tmp_str += str[i].first;
+                qDebug() << tmp_str;
 
                 if (fm.horizontalAdvance(tmp_str) >= this->size().width())
                     break;
 
-                if (str[i].first == ' ')
+                if (str[i].first == ' ' || i == str.size() - 1)
                     right_border_second = i;
             }
 
@@ -214,4 +215,18 @@ void CustomTextBrowser::set_font_family(QString font_family) {
 
 QString CustomTextBrowser::get_font_family() {
     return this->font_family;
+}
+
+void CustomTextBrowser::keyPressEvent(QKeyEvent *e) {
+    qDebug() << e->key();
+}
+
+void CustomTextBrowser::reset() {
+    left_border_first = -1;
+    left_border_second = -1;
+    right_border_first = -1;
+    right_border_second = -1;
+    cur_pos = 0;
+    x = 20;
+    y = 20;
 }

@@ -25,12 +25,14 @@ public:
     void set_text(QString text);
     void paint();
     bool is_move();
+    void reset();
 
 protected slots:
     void call_event();
 
 protected:
     virtual void paintEvent(QPaintEvent *e) override;
+    virtual void keyPressEvent(QKeyEvent *e) override;
 
 private:
     int left_border_first = -1;

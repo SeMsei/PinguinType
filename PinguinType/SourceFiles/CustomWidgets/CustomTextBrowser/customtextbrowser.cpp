@@ -15,11 +15,11 @@ void CustomTextBrowser::paint_text(QVector<QPair<QChar, State>> str) {
 
     for (size_t i = left_border_first; i <= right_border_first; i++) {
         if (str[i].second == State::Default) {
-            html += "<span style=\"color:#778190;\">";
+            html += "<span style=\"color:#"+QString::number(default_color, 16)+";\">";
         } else if (str[i].second == State::Correct) {
-            html += "<span style=\"color:#E9ECF0;\">";
+            html += "<span style=\"color:#"+QString::number(correct_color, 16)+";\">";
         } else {
-            html += "<span style=\"color:#BF3335;\">";
+            html += "<span style=\"color:#"+QString::number(incorrect_color, 16)+";\">";
         }
 
         html += str[i].first;
@@ -33,11 +33,11 @@ void CustomTextBrowser::paint_text(QVector<QPair<QChar, State>> str) {
         html.append("<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">");
         for (size_t i = left_border_second; i <= right_border_second; i++) {
             if (str[i].second == State::Default) {
-                html += "<span style=\"color:#778190;\">";
+                html += "<span style=\"color:#"+QString::number(default_color, 16)+";\">";
             } else if (str[i].second == State::Correct) {
-                html += "<span style=\"color:##E9ECF0;\">";
+                html += "<span style=\"color:#"+QString::number(correct_color, 16)+";\">";
             } else {
-                html += "<span style=\"color:#BF3335;\">";
+                html += "<span style=\"color:#"+QString::number(incorrect_color, 16)+";\">";
             }
 
             html += str[i].first;
@@ -103,7 +103,7 @@ void CustomTextBrowser::call_event() {
 
 void CustomTextBrowser::paintEvent(QPaintEvent *e) {
     QPainter painter(viewport());
-    painter.setPen(QPen(QColor(0xF44C7F), 2, Qt::SolidLine, Qt::RoundCap));
+    painter.setPen(QPen(QColor(caret_color), 2, Qt::SolidLine, Qt::RoundCap));
 
     if (cur_pos == str.size()) {
         td.drawContents(&painter);
@@ -111,10 +111,10 @@ void CustomTextBrowser::paintEvent(QPaintEvent *e) {
     }
 
     if (is_short) {
-        painter.setPen(QPen(QColor(0xF44C7F), 1, Qt::SolidLine, Qt::RoundCap));
+        painter.setPen(QPen(QColor(caret_color), 1, Qt::SolidLine, Qt::RoundCap));
         painter.drawLine(x-16, y-9, x-16, y+font_size/3*4-10);
     } else {
-        painter.setPen(QPen(QColor(0xF44C7F), 2, Qt::SolidLine, Qt::RoundCap));
+        painter.setPen(QPen(QColor(caret_color), 2, Qt::SolidLine, Qt::RoundCap));
         painter.drawLine(x-16,y-11,x-16, y+font_size/3*4-8);
     }
 
@@ -122,7 +122,7 @@ void CustomTextBrowser::paintEvent(QPaintEvent *e) {
 }
 
 void CustomTextBrowser::set_pos(int pos) {
-    qDebug() << this->size();
+    //qDebug() << this->size();
 
     this->cur_pos = pos;
 
@@ -163,7 +163,7 @@ void CustomTextBrowser::set_pos(int pos) {
 
             for (size_t i = left_border_second; i < str.size(); i++) {
                 tmp_str += str[i].first;
-                qDebug() << tmp_str;
+                //qDebug() << tmp_str;
 
                 if (fm.horizontalAdvance(tmp_str) >= this->size().width())
                     break;
@@ -171,7 +171,7 @@ void CustomTextBrowser::set_pos(int pos) {
                 if (str[i].first == ' ' || i == str.size() - 1)
                     right_border_second = i;
             }
-
+            //will never be reached
             if (right_border_second == -1)
                 right_border_second = str.size() - 1;
         }
@@ -229,4 +229,19 @@ void CustomTextBrowser::reset() {
     cur_pos = 0;
     x = 20;
     y = 20;
+}
+
+void CustomTextBrowser::set_caret_color(QRgb caret_color) {
+    qDebug() << caret_color << "xui";
+    this->caret_color = caret_color;
+}
+
+void CustomTextBrowser::set_correct_color(QRgb correct_color){
+    this->correct_color = correct_color;
+}
+void CustomTextBrowser::set_incorrect_color(QRgb incorrect_color) {
+    this->incorrect_color = incorrect_color;
+}
+void CustomTextBrowser::set_default_color(QRgb default_color) {
+    this->default_color = default_color;
 }

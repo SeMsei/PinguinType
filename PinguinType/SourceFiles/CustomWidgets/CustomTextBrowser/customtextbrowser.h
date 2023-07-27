@@ -27,6 +27,11 @@ public:
     bool is_move();
     void reset();
 
+    void set_caret_color(QRgb caret_color);
+    void set_correct_color(QRgb correct_color);
+    void set_incorrect_color(QRgb incorrect_color);
+    void set_default_color(QRgb default_color);
+
 protected slots:
     void call_event();
 
@@ -60,4 +65,9 @@ private:
 
     bool is_paint = false;
     bool is_paint_text = false;
+
+    QRgb caret_color = 0x100000;
+    QRgb incorrect_color = 0x100000;
+    QRgb correct_color = 0x100000;
+    QRgb default_color = 0x100000;
 };

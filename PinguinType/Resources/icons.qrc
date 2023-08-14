@@ -28,8 +28,11 @@
         <file>icons/gitw.png</file>
         <file>icons/watercolorw.png</file>
         <file>icons/example.png</file>
+        <file>icons/loupe.png</file>
+        <file>icons/restart.png</file>
     </qresource>
     <qresource prefix="/images/marks">
-        <file>check_marks/default.png</file>
+        <file>check_marks/F44C7F.png</file>
+        <file>check_marks/FCFCF8.png</file>
     </qresource>
 </RCC>

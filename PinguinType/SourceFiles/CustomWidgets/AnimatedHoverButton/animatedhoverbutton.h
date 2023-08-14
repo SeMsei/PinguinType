@@ -4,6 +4,7 @@
 #include <QColor>
 #include <QPropertyAnimation>
 #include <QPainter>
+#include <QJsonObject>
 
 class QVariantAnimation;
 
@@ -23,6 +24,13 @@ public:
     void set_pic(QString pic_path);
     void update_qss();
     void set_font_size(int font_size);
+    void set_theme(const QJsonObject &obj);
+    void click();
+    void unclick();
+
+signals:
+    void hover_signal();
+    void leave_signal();
 
 protected:
     bool eventFilter(QObject *obj, QEvent *e);
@@ -30,6 +38,8 @@ protected:
     const QColor& get_pic_font_color() const;
 
 private:
+    bool is_clicked = false;
+
     bool is_enter;
     bool is_paint_icon = false;
 
@@ -41,6 +51,9 @@ private:
     QRgb std_bg_clr = 0x0;
     QRgb hvr_pic_font_clr =0x0;
     QRgb hvr_bg_clr = 0x0;
+    QRgb border_color = 0x0;
+    QRgb sltctd_hvr_pic_font_color = 0x0;
+    QRgb sltctd_std_pic_font_color = 0x0;
 
     float mid_r = 0x8A;
     float mid_g = 0x8F;

@@ -37,11 +37,13 @@ bool AnimatedHoverButton::eventFilter(QObject *obj, QEvent *e)
     if (e->type() == QEvent::HoverEnter) {
         StartHoverEnterAnimation();
         is_enter = true;
+        emit hover_signal();
     }
 
     if (e->type() == QEvent::HoverLeave) {
         StartHoverLeaveAnimation();
         is_enter = false;
+        emit leave_signal();
     }
 
     return false;
@@ -123,7 +125,12 @@ void AnimatedHoverButton::set_pic(QString pic_path) {
 
 void AnimatedHoverButton::update_qss() {
     QString qss;
-    qss.append("border:0px solid black; border-radius: 10px;font: "+QString::number(font_size)+"px \"Comic Sans MS\";");
+
+    if (is_clicked)
+        qss.append("border:2px solid #"+QString::number(border_color, 16)+"; border-radius: 10px;font: "+QString::number(font_size)+"px \"Comic Sans MS\";");
+    else
+        qss.append("border:0px solid transparent; border-radius: 10px;font: "+QString::number(font_size)+"px \"Comic Sans MS\";");
+
     QString color_str = QString("color:rgb(%1, %2, %3);").arg(m_color.red()).arg(m_color.green()).arg(m_color.blue());
     qss.append(color_str);
 
@@ -150,4 +157,61 @@ void AnimatedHoverButton::update_qss() {
 
 void AnimatedHoverButton::set_font_size(int font_size) {
     this->font_size = font_size;
+}
+
+void AnimatedHoverButton::set_theme(const QJsonObject &obj) {
+    bool *ok = new bool();
+
+    if (is_bg_transparent) {
+        std_pic_font_clr = obj["btn_transparent_std_pic_font_color"].toString().toInt(ok, 16);
+        std_bg_clr = obj["btn_transparent_hvr_pic_font_color"].toString().toInt(ok, 16);
+        hvr_pic_font_clr = obj["btn_transparent_hvr_pic_font_color"].toString().toInt(ok, 16);
+        hvr_bg_clr = obj["btn_transparent_std_pic_font_color"].toString().toInt(ok, 16);
+        sltctd_hvr_pic_font_color = obj["btn_transparent_sltctd_hvr_pic_font_color"].toString().toInt(ok, 16);
+        sltctd_std_pic_font_color = obj["btn_transparent_sltctd_std_pic_font_color"].toString().toInt(ok, 16);
+
+        if (!is_clicked) {
+            m_color = std_pic_font_clr;
+            m_bg_color = std_bg_clr;
+        } else {
+            m_color = hvr_pic_font_clr;
+            m_bg_color = hvr_bg_clr;
+        }
+    } else {
+        std_pic_font_clr = obj["btn_non_transparent_std_pic_font_color"].toString().toInt(ok, 16);
+        m_color = std_pic_font_clr;
+
+
+        std_bg_clr = obj["btn_non_transparent_hvr_pic_font_color"].toString().toInt(ok, 16);
+        m_bg_color = std_bg_clr;
+        qDebug() << m_color.red() << m_color.green() << m_color.blue() << std_bg_clr;
+        hvr_pic_font_clr = obj["btn_non_transparent_hvr_pic_font_color"].toString().toInt(ok, 16);
+        hvr_bg_clr = obj["btn_non_transparent_std_pic_font_color"].toString().toInt(ok, 16);
+        border_color = obj["btn_non_transparent_sltctd_border_color"].toString().toInt(ok, 16);
+        sltctd_hvr_pic_font_color = obj["btn_transparent_std_pic_font_color"].toString().toInt(ok, 16);
+        sltctd_std_pic_font_color = obj["btn_transparent_std_pic_font_color"].toString().toInt(ok, 16);
+    }
+
+
+    QColor tmp_std(std_pic_font_clr);
+    QColor tmp_hvr(hvr_pic_font_clr);
+
+    mid_r = std::min(tmp_std.red(), tmp_hvr.red()) + abs(tmp_std.red() - tmp_hvr.red()) / 2.0;
+    mid_g = std::min(tmp_std.green(), tmp_hvr.green()) + abs(tmp_std.green() - tmp_hvr.green()) / 2.0;
+    mid_b = std::min(tmp_std.blue(), tmp_hvr.blue()) + abs(tmp_std.blue() - tmp_hvr.blue()) / 2.0;
+    update_qss();
+
+    delete ok;
+}
+
+void AnimatedHoverButton::click() {
+    this->is_clicked = true;
+    std::swap(this->sltctd_std_pic_font_color, std_pic_font_clr);
+    std::swap(this->sltctd_hvr_pic_font_color, hvr_pic_font_clr);
+}
+
+void AnimatedHoverButton::unclick() {
+    this->is_clicked = false;
+    std::swap(this->sltctd_std_pic_font_color, std_pic_font_clr);
+    std::swap(this->sltctd_hvr_pic_font_color, hvr_pic_font_clr);
 }

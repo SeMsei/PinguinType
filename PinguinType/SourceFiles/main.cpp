@@ -17,5 +17,6 @@ int main(int argc, char *argv[])
     w.setMaximumSize(QSize(QGuiApplication::primaryScreen()->size().width()*0.8,
                            QGuiApplication::primaryScreen()->size().height()*0.8));
     w.show();
+    w.set_tooltip();
     return a.exec();
 }
